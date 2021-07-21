@@ -1,3 +1,5 @@
 package waf
 
-const defaultWafTemplate =`Intercept illegal requests`
+const defaultWafTemplate =`FORBIDDEN`
+
+const rateLimitWafTemplate =`You have reached the rate limit. Try again later.`

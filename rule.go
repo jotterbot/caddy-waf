@@ -146,3 +146,10 @@ func (w *CaddyWaf) redirectIntercept(rw http.ResponseWriter) error {
 	tpl, _ = template.New("default_listing").Parse(defaultWafTemplate)
 	return tpl.Execute(rw, nil)
 }
+
+// redirectRateLimit Intercept request
+func (w *CaddyWaf) redirectRateLimit(rw http.ResponseWriter) error {
+	var tpl *template.Template
+	tpl, _ = template.New("rateLimit_listing").Parse(rateLimitWafTemplate)
+	return tpl.Execute(rw, nil)
+}

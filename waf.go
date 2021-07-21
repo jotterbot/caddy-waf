@@ -56,9 +56,12 @@ func (w CaddyWaf) ServeHTTP(rw http.ResponseWriter, r *http.Request, next caddyh
 	if w.detectIp(remoteAddr, true) ||
 		w.detectRequestArgs(r) ||
 		w.detectRequestBody(r) ||
-		w.detectUserAgent(r) ||
-		w.rateLimit.detect(remoteAddr, r) {
+		w.detectUserAgent(r) {
+		rw.WriteHeader(http.StatusForbidden)
 		return w.redirectIntercept(rw)
+	} else if w.rateLimit.detect(remoteAddr, r) {
+		rw.WriteHeader(http.StatusTooManyRequests)
+		return w.redirectRateLimit(rw)
 	}
 
 	return next.ServeHTTP(rw, r)
